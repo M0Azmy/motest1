@@ -1,0 +1,28 @@
+  # Use Docker as the provider
+  config.vm.provider "docker" do |d|
+    # Specify the Docker image
+    d.image = "ubuntu:latest"
+    d.has_ssh = true
+
+    # Optional: Expose a port for SSH (if needed)
+    # d.ports = ["2222:22"]
+
+    # Optional: Mount a directory from the host to the guest
+    # d.volumes = ["/host/path:/container/path"]
+  end
+
+  # Disable the default synced folder
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  # Provisioning
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
+    apt-get install -y openssh-server
+    mkdir /var/run/sshd
+    echo 'root:root' | chpasswd
+    sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+    echo 'export VAGRANT_NO_PLUGINS=1' >> /root/.bashrc
+    service ssh start
+  SHELL
+end
