@@ -1,0 +1,71 @@
+✖ ls -al   
+total 188
+drwx------    1 root     root          4096 Sep  3 11:39 .
+dr-xr-xr-x    1 root     root          4096 Sep  3 11:33 ..
+-rw-r--r--    1 root     root           683 Sep  3 11:33 .bash_profile
+-rw-r--r--    1 root     root           122 Sep  1 07:10 .bashrc
+drwxr-xr-x    3 root     root          4096 Sep  3 11:33 .cache
+drwxr-xr-x    1 root     root          4096 Sep  1 07:10 .config
+drwxr-xr-x    1 root     root          4096 Sep  1 07:10 .oh-my-zsh
+drwx------    2 root     root          4096 Sep  3 11:34 .ssh
+drwxr-xr-x    4 root     root          4096 Sep  3 11:33 .vim
+-rw-r--r--    1 root     root           111 Sep  3 11:33 .vimrc
+-rw-r--r--    1 root     root         37413 Sep  3 11:34 .zcompdump-controlplane-5.9
+-r--r--r--    1 root     root         84856 Sep  3 11:34 .zcompdump-controlplane-5.9.zwc
+-rw-r--r--    1 root     root          1073 Sep  3 11:33 .zlogin
+-rw-------    1 root     root           292 Sep  3 11:39 .zsh_history
+-rw-r--r--    1 root     root           205 Sep  3 11:33 .zshrc
+
+~ ➜  cat .zshrc           
+export ZSH="$HOME/.oh-my-zsh"
+plugins=(git sudo  zsh-autosuggestions zsh-syntax-highlighting)
+source $ZSH/oh-my-zsh.sh
+alias vi="vim"
+eval "$(starship init zsh)"
+export PAGER=less
+export DOCKER_BUILDKIT=0
+
+~ ➜  cat .zlogin      
+alias vi="vim"
+eval "$(starship init zsh)"
+export PAGER=less
+# Colors
+black="\[$(tput setaf 0)\]"
+red="\[$(tput setaf 1)\]"
+green="\[$(tput setaf 2)\]"
+yellow="\[$(tput setaf 3)\]"
+blue="\[$(tput setaf 4)\]"
+magenta="\[$(tput setaf 5)\]"
+cyan="\[$(tput setaf 6)\]"
+white="\[$(tput setaf 7)\]"
+# Title bar - "user@host: ~"
+title="\u@\h: \w"
+titlebar="\[\033]0;""\007\]"
+# Git branch
+git_branch() {   git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)\ /'; }
+# Clear attributes
+clear_attributes="\[$(tput sgr0)\]"
+termwidth="$(tput cols)"
+
+# Adjust the spacing for the "Welcome to ..." and "All rights ..." lines.
+
+left_align() {
+  local padding="$(printf '%0.1s' \ {1..500})"
+  local padding_percentage="$1"
+  local padding_width=$((termwidth*padding_percentage/100))
+  printf '%*.*s %s %*.*s\n' "$padding_width" "$padding_width" "$padding" "$2" 0 "$((termwidth-1-${#2}-padding_width))" "$padding"
+}
+
+left_align 6 "Welcome to the KodeKloud Hands-On lab"
+figlet -w ${termwidth} -f slant KODEKLOUD | lolcat
+left_align 10 "All rights reserved"
+source /root/.zshrc
+
+~ ➜  cat /root/.zshrc       
+export ZSH="$HOME/.oh-my-zsh"
+plugins=(git sudo  zsh-autosuggestions zsh-syntax-highlighting)
+source $ZSH/oh-my-zsh.sh
+alias vi="vim"
+eval "$(starship init zsh)"
+export PAGER=less
+export DOCKER_BUILDKIT=0
